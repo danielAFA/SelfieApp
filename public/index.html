@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      window.onload = () => {
+        if ("geolocation" in navigator) {
+          console.log("Geolocation is available")
+
+          let lat = null
+          let long = null
+
+          const handleGetGeoClick = e => {
+            navigator.geolocation.getCurrentPosition(async position => {
+              lat = position.coords.latitude
+              lon = position.coords.longitude
+              document.getElementById("latitude").textContent = lat.toFixed(2)
+              document.getElementById("longitude").textContent = lon.toFixed(2)
+
+              const data = { lat, lon }
+              const options = {
+                headers: { "content-type": "application/json" },
+                method: "POST",
+                body: JSON.stringify(data),
+              }
+              const response = await fetch("api", options)
+              const json = await response.json()
+              const { reqPerformed } = json
+              console.log(reqPerformed)
+            })
+          }
+          document
+            .getElementById("getGeo")
+            .addEventListener("click", handleGetGeoClick)
+        } else console.log("Geolocation is not available")
+      }
+    </script>
+    <h1>Data Selfie App</h1>
+    <button id="getGeo">Get geolocation</button>
+    <p>
+      latitude: <span id="latitude"></span>&deg;<br />
+      longitude: <span id="longitude"></span>&deg;
+    </p>
+  </body>
+</html>
