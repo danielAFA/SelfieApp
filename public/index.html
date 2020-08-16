@@ -3,47 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"
+      integrity="sha512-WIklPM6qPCIp6d3fSSr90j+1unQHUOoWDS4sdTiR8gxUTnyZ8S2Mr8e10sKKJ/bhJgpAa/qG068RDkg6fIlNFA=="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
     <title>Document</title>
   </head>
   <body>
-    <script>
-      window.onload = () => {
-        if ("geolocation" in navigator) {
-          console.log("Geolocation is available")
-
-          let lat = null
-          let long = null
-
-          const handleGetGeoClick = e => {
-            navigator.geolocation.getCurrentPosition(async position => {
-              lat = position.coords.latitude
-              lon = position.coords.longitude
-              document.getElementById("latitude").textContent = lat.toFixed(2)
-              document.getElementById("longitude").textContent = lon.toFixed(2)
-
-              const data = { lat, lon }
-              const options = {
-                headers: { "content-type": "application/json" },
-                method: "POST",
-                body: JSON.stringify(data),
-              }
-              const response = await fetch("api", options)
-              const json = await response.json()
-              const { reqPerformed } = json
-              console.log(reqPerformed)
-            })
-          }
-          document
-            .getElementById("getGeo")
-            .addEventListener("click", handleGetGeoClick)
-        } else console.log("Geolocation is not available")
-      }
-    </script>
     <h1>Data Selfie App</h1>
-    <button id="getGeo">Get geolocation</button>
+    <div><a href="/">enter</a> | <a href="/logs">list</a></div>
     <p>
       latitude: <span id="latitude"></span>&deg;<br />
       longitude: <span id="longitude"></span>&deg;
     </p>
+    <form>
+      <label for="userInput">Enter image description</label>
+      <input type="text" id="userInput" /><button id="getGeo">
+        Submit
+      </button>
+    </form>
+    <script src="sketch.js"></script>
   </body>
 </html>
